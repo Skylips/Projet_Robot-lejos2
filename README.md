@@ -2,4 +2,4 @@
 
 Master 1 MIAGE
 
-Projet d'Ingénierie Logicielle
+Projet d'Ingénierie Logicielle du 2nd semestre
