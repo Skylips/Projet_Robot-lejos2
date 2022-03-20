@@ -180,7 +180,15 @@ public class Brick{
 						portail.majEtatPortail();
 						ouvertureTotale();
 						
+					} 
+					
+					
+					/*else if(voiture enregistre detecte){
+					 	ouvertureTotale();
 					}
+					*/
+								
+					
 				}
 				System.out.println("INTERRUPTION!!!!!!!!!!!!!!!!!!!!!!!!");
 				EBT.disconnect();
