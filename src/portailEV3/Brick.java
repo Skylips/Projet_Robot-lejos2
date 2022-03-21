@@ -42,7 +42,7 @@ public class Brick{
 	
 	private static SoundRunnable sound;
 	
-
+	private static ServerTCP server;
 	
 	public static void main(String[] args) throws InterruptedException{
 		
@@ -183,10 +183,7 @@ public class Brick{
 					} 
 					
 					
-					/*else if(voiture enregistre detecte){
-					 	ouvertureTotale();
-					}
-					*/
+					ouverturePortailVoiture();
 								
 					
 				}
@@ -194,6 +191,18 @@ public class Brick{
 				EBT.disconnect();
 				EBT.interrupt();
 			}
+		}
+	}
+	public static void ouverturePortailVoiture() {
+		server.connectionTCP(80);
+		System.out.println("Attente Voiture");
+		
+		if(server.is_connect == true) {
+			System.out.println("Connection client success");
+			moteurDroit.setAction(3);
+			moteurGauche.setAction(3);
+			moteurDroit.resumeThread();
+			moteurGauche.resumeThread();
 		}
 	}
 

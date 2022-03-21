@@ -46,6 +46,12 @@ public class MoteurRunnable implements Runnable {
 						e.printStackTrace();
 					}
 					break;
+				case 3:
+					try {
+						ouvrirVoiture();
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				default:
 					break;
 				}
@@ -118,6 +124,18 @@ public class MoteurRunnable implements Runnable {
 		this.porte.stop(true);
 	}
 
+	public void ouvrirVoiture() throws InterruptedException{
+		this.porte.setEtat(EtatPorte.EN_OUVERTURE); 
+		
+		this.sound.resumeThread();
+		
+		float lastPosition = -1000;
+		
+		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
+			
+		}
+	}
+	
 	public void setAction(int action) {
 		this.action = action;
 	}
