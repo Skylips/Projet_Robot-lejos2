@@ -133,6 +133,17 @@ public class MoteurRunnable implements Runnable {
 		
 		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
 			
+			if(this.porte.getPosition() < 360 && this.porte.getPosition() != lastPosition) {
+				this.porte.ouvrir();
+				lastPosition = this.porte.getPosition();
+			}else {
+				Thread.sleep(200);
+				if(this.porte.getPosition() == lastPosition) {
+					LogEV3.addError("Erreur Capteru ouverture | "+this.cote);
+					System.exit(1);
+					break;
+				}
+			}			
 		}
 	}
 	
