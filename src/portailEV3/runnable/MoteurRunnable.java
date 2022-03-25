@@ -69,6 +69,8 @@ public class MoteurRunnable implements Runnable {
 		
 		float lastPosition = -1000;
 		
+		System.out.println();
+		
 		while (!this.capteurOuvert.contact() && this.isRunning && !this.capteurPresence.presence()) {
 			
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
@@ -81,8 +83,7 @@ public class MoteurRunnable implements Runnable {
 					System.exit(1);
 					break;
 				}
-			}
-			
+			}			
 		}
 
 		if (this.capteurOuvert.contact()) {
@@ -125,17 +126,60 @@ public class MoteurRunnable implements Runnable {
 	}
 
 	public void ouvrirVoiture() throws InterruptedException{
+		this.porte.setEtat(EtatPorte.EN_OUVERTURE);
+		this.sound.resumeThread();
+		
+		float lastPosition = -1000;
+		
+		System.out.println();
+		
+		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
+			
+			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
+				this.porte.ouvrir();
+				lastPosition = this.porte.getPosition();
+			} else {
+				Thread.sleep(1000);
+				if (this.porte.getPosition() == lastPosition) {
+					LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
+					System.exit(1);
+					break;
+				}
+			}			
+		}
+
+		if (this.capteurOuvert.contact()) {
+			this.porte.setEtat(EtatPorte.OUVERTE);
+		} else {
+			this.porte.setEtat(EtatPorte.ARRETEE_EN_OUVERTURE);
+		}
+		this.sound.stopThread();
+		this.porte.stop(true);
+	}
+	
+	/*public void ouvrirVoiture() throws InterruptedException{
 		this.porte.setEtat(EtatPorte.EN_OUVERTURE); 
 		
 		this.sound.resumeThread();
 		
 		float lastPosition = -1000;
 		
+		/*System.out.println("VERIF ICI");
+		System.out.println("1 : "+!this.capteurOuvert.contact());
+		System.out.println("2 : "+this.isRunning);
+		System.out.println("3 : "+this.capteurPresence.presence());
+				
 		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
 			
-			if(this.porte.getPosition() < 360 && this.porte.getPosition() != lastPosition) {
+			//System.out.println("Boucle ouvrirVoiure");
+			
+			if(this.porte.getPosition() < 110 || this.porte.getPosition() != lastPosition) {
 				this.porte.ouvrir();
 				lastPosition = this.porte.getPosition();
+				
+				System.out.println("Position Porte : "+this.porte.getPosition());
+				System.out.println("Boolean : "+(this.porte.getPosition() != lastPosition));
+				
 			}else {
 				Thread.sleep(200);
 				if(this.porte.getPosition() == lastPosition) {
@@ -145,7 +189,7 @@ public class MoteurRunnable implements Runnable {
 				}
 			}			
 		}
-	}
+	}*/
 	
 	public void setAction(int action) {
 		this.action = action;

@@ -12,13 +12,13 @@ public class Moteur {
 	}
 
 	void pousser() {
-		this.moteur.setSpeed(30);
+		this.moteur.setSpeed(20);
 		this.moteur.forward();
 		//this.moteur.rotate(5);
 	}
 
 	void tirer() {
-		this.moteur.setSpeed(30);
+		this.moteur.setSpeed(20);
 		this.moteur.backward();
 		//this.moteur.rotate(-5);
 	}

@@ -42,14 +42,16 @@ public class Brick{
 	
 	private static SoundRunnable sound;
 	
-	private static ServerTCP server;
+	private static ServerTCP server = new ServerTCP();
+	
+	private static int nombre=0;
 	
 	public static void main(String[] args) throws InterruptedException{
 		
 		sound = new SoundRunnable();
 		new Thread(sound).start();
 		
-		moteurDroit = new MoteurRunnable(capteurDroitOuvert, capteurPortailFerme, porteDroite, capteurPresence, sound, "droit");
+		moteurDroit = new MoteurRunnable(capteurGaucheOuvert, capteurPortailFerme, porteDroite, capteurPresence, sound, "droit");
 		moteurGauche = new MoteurRunnable(capteurGaucheOuvert, capteurPortailFerme, porteGauche, capteurPresence, sound, "gauche");
 		
 		// INITIALISATION DES THREADS
@@ -59,7 +61,7 @@ public class Brick{
 		portail = new PortailRunnable(moteurDroit, moteurGauche);
 		new Thread(portail).start();
 		
-		System.out.println("Début de l'initialisation");
+		System.out.println("Debut de l'initialisation");
 		
 		// Initialisation du portail
 		moteurDroit.setAction(1);
@@ -118,7 +120,7 @@ public class Brick{
 							case "commande":
 								switch(msgTelecommande.getParams().get(0)){
 									case "ouvTotale":
-										System.out.println("TESTBTDEVICE :" +EBT.getBTadress());
+										System.out.println("TEST_BT_DEVICE :" +EBT.getBTadress());
 										portail.majEtatPortail();
 										ouvertureTotale();
 										
@@ -180,11 +182,15 @@ public class Brick{
 						portail.majEtatPortail();
 						ouvertureTotale();
 						
-					} 
-					
-					
-					ouverturePortailVoiture();
-								
+					} 		
+					if (nombre==0) {
+						nombre=1;			
+						System.out.println("-------IF---------");
+						portail.majEtatPortail();
+						ouverturePortailVoiture();
+						System.out.println("Valeur nombre : "+nombre);
+					}
+													
 					
 				}
 				System.out.println("INTERRUPTION!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -193,6 +199,7 @@ public class Brick{
 			}
 		}
 	}
+	
 	public static void ouverturePortailVoiture() {
 		server.connectionTCP(80);
 		System.out.println("Attente Voiture");
