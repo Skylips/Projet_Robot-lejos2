@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Louis/Desktop/Ingenierie_Log/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Louis/Desktop/Ingenierie_Log/json-simple-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Louis/Desktop/Ingenierie_Log/junit-4.13.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Louis/Desktop/Ingenierie_Log/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Utilisateur/Desktop/IngénierieLog/CODE_ROBOT/Projet_Robot-lejos2/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Utilisateur/Desktop/IngénierieLog/CODE_ROBOT/Projet_Robot-lejos2/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Utilisateur/Desktop/IngénierieLog/CODE_ROBOT/Projet_Robot-lejos2/junit-4.13.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Utilisateur/Desktop/IngénierieLog/CODE_ROBOT/Projet_Robot-lejos2/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
