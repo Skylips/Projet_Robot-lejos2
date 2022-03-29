@@ -16,7 +16,7 @@ public class MoteurRunnable implements Runnable {
 	private String cote;
 
 	private boolean isRunning = true;
-	private volatile int action; // 1 = ouvrir, 2 = fermer
+	private volatile int action; // 1 = ouvrir, 2 = fermer, 3 = ouverture voiture
 
 	public MoteurRunnable(CapteurContact capteurOuvert, CapteurContact capteurFerme, Porte porteP, CapteurPresence cp, SoundRunnable sound, String cote) {
 		this.capteurOuvert = capteurOuvert;
@@ -31,6 +31,7 @@ public class MoteurRunnable implements Runnable {
 	public void run() {
 		while (true) {
 			if (this.isRunning) {
+				System.out.println("ACTION : "+action);
 				switch (this.action) {
 				case 1:
 					try {
@@ -69,7 +70,7 @@ public class MoteurRunnable implements Runnable {
 		
 		float lastPosition = -1000;
 		
-		System.out.println();
+		System.out.println("OUVRIR");
 		
 		while (!this.capteurOuvert.contact() && this.isRunning && !this.capteurPresence.presence()) {
 			
@@ -79,7 +80,7 @@ public class MoteurRunnable implements Runnable {
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
+					//LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
 					System.exit(1);
 					break;
 				}
@@ -108,7 +109,7 @@ public class MoteurRunnable implements Runnable {
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					LogEV3.addError("Disfonctionnement capteur fermeture");
+					//LogEV3.addError("Disfonctionnement capteur fermeture");
 					System.exit(1);
 					break;
 				}
@@ -141,7 +142,7 @@ public class MoteurRunnable implements Runnable {
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
+					//LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
 					System.exit(1);
 					break;
 				}
@@ -192,6 +193,7 @@ public class MoteurRunnable implements Runnable {
 	}*/
 	
 	public void setAction(int action) {
+		System.out.println("action");
 		this.action = action;
 	}
 
@@ -200,6 +202,7 @@ public class MoteurRunnable implements Runnable {
 	}
 
 	public void resumeThread() {
+		System.out.println("thread");
 		this.isRunning = true;
 	}
 

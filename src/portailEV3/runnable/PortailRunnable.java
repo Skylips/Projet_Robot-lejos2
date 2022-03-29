@@ -25,11 +25,11 @@ public class PortailRunnable implements Runnable {
 		
 		while (true) {
 			
-			// Changement d'état du portail
+			// Changement d'etat du portail
 			majEtatPortail();
 			if (this.etatPortail != etatPortailPrec && this.etatPortail != EtatPortail.INCONNU ) {
 				//System.out.println(etatPorteGauche + " " + etatPorteDroite);
-				LogEV3.addLog(etatPortail.toString());
+				//LogEV3.addLog(etatPortail.toString());
 			}
 			etatPortailPrec = etatPortail;
 		}

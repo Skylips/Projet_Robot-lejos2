@@ -28,7 +28,7 @@ public class Brick{
 	private static boolean app_alive, isConnected;
 	
 	private static CapteurContact capteurGaucheOuvert = new CapteurContact(SensorPort.S1);
-	private static CapteurContact capteurDroitOuvert = new CapteurContact(SensorPort.S2);
+	//private static CapteurContact capteurDroitOuvert = new CapteurContact(SensorPort.S2);
 	private static CapteurContact capteurPortailFerme = new CapteurContact(SensorPort.S3);
 
 	private static CapteurPresence capteurPresence = new CapteurPresence(SensorPort.S4);
@@ -68,6 +68,7 @@ public class Brick{
 		moteurGauche.setAction(1);
 		moteurDroit.resumeThread();
 		moteurGauche.resumeThread();
+
 		
 		while (moteurDroit.getIsRunning() || moteurGauche.getIsRunning()) {
 			Thread.sleep(1000);
@@ -79,13 +80,14 @@ public class Brick{
 			moteurDroit.resumeThread();
 			moteurGauche.resumeThread();
 		}
+
 		
 		while (moteurDroit.getIsRunning() || moteurGauche.getIsRunning()) {
 			Thread.sleep(1000);
 		}
 		
 		if (!capteurPortailFerme.contact()) {
-			LogEV3.addError("Erreur lors de l'initialisation");
+			//LogEV3.addError("Erreur lors de l'initialisation");
 			LCD.clear();
 			LCD.drawString("Erreur lors de l'initialisation", 0, 5);
 			Delay.msDelay(5000);
@@ -183,6 +185,7 @@ public class Brick{
 						ouvertureTotale();
 						
 					} 		
+					
 					if (nombre==0) {
 						nombre=1;			
 						System.out.println("-------IF---------");
@@ -190,6 +193,7 @@ public class Brick{
 						ouverturePortailVoiture();
 						System.out.println("Valeur nombre : "+nombre);
 					}
+					
 													
 					
 				}
@@ -201,6 +205,7 @@ public class Brick{
 	}
 	
 	public static void ouverturePortailVoiture() {
+		server.start();
 		server.connectionTCP(80);
 		System.out.println("Attente Voiture");
 		
