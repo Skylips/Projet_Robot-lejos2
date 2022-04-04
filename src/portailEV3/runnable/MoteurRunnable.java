@@ -31,7 +31,7 @@ public class MoteurRunnable implements Runnable {
 	public void run() {
 		while (true) {
 			if (this.isRunning) {
-				System.out.println("ACTION : "+action);
+				//System.out.println("ACTION : "+action);
 				switch (this.action) {
 				case 1:
 					try {
@@ -50,6 +50,12 @@ public class MoteurRunnable implements Runnable {
 				case 3:
 					try {
 						ouvrirVoiture();
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				case 4:
+					try {
+						fermerVoiture();
 					}catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -158,39 +164,35 @@ public class MoteurRunnable implements Runnable {
 		this.porte.stop(true);
 	}
 	
-	/*public void ouvrirVoiture() throws InterruptedException{
-		this.porte.setEtat(EtatPorte.EN_OUVERTURE); 
-		
+	public void fermerVoiture() throws InterruptedException {
+		this.porte.setEtat(EtatPorte.EN_FERMETURE);
 		this.sound.resumeThread();
 		
-		float lastPosition = -1000;
+		float lastPosition = 1000;
 		
-		/*System.out.println("VERIF ICI");
-		System.out.println("1 : "+!this.capteurOuvert.contact());
-		System.out.println("2 : "+this.isRunning);
-		System.out.println("3 : "+this.capteurPresence.presence());
-				
-		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
-			
-			//System.out.println("Boucle ouvrirVoiure");
-			
-			if(this.porte.getPosition() < 110 || this.porte.getPosition() != lastPosition) {
-				this.porte.ouvrir();
+		while (!this.capteurFerme.contact() && this.isRunning && this.capteurPresence.presence()) {
+			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
+				this.porte.fermer();
 				lastPosition = this.porte.getPosition();
-				
-				System.out.println("Position Porte : "+this.porte.getPosition());
-				System.out.println("Boolean : "+(this.porte.getPosition() != lastPosition));
-				
-			}else {
-				Thread.sleep(200);
-				if(this.porte.getPosition() == lastPosition) {
-					LogEV3.addError("Erreur Capteru ouverture | "+this.cote);
+			} else {
+				Thread.sleep(1000);
+				if (this.porte.getPosition() == lastPosition) {
+					//LogEV3.addError("Disfonctionnement capteur fermeture");
 					System.exit(1);
 					break;
 				}
-			}			
+			}
 		}
-	}*/
+		
+		if (this.capteurFerme.contact()) {
+			this.porte.setEtat(EtatPorte.FERMEE);
+		} else {
+			this.porte.setEtat(EtatPorte.ARRETEE_EN_FERMETURE);
+		}
+		
+		this.sound.stopThread();
+		this.porte.stop(true);
+	}
 	
 	public void setAction(int action) {
 		System.out.println("action");
@@ -202,7 +204,6 @@ public class MoteurRunnable implements Runnable {
 	}
 
 	public void resumeThread() {
-		System.out.println("thread");
 		this.isRunning = true;
 	}
 

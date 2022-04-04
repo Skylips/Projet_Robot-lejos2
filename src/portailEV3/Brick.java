@@ -1,5 +1,7 @@
 package portailEV3;
 
+import java.sql.Time;
+
 import org.json.JSONException;
 
 import ca.ualberta.awhittle.ev3btrc.MessageBluetooth;
@@ -43,8 +45,9 @@ public class Brick{
 	private static SoundRunnable sound;
 	
 	private static ServerTCP server = new ServerTCP();
-	
+
 	private static int nombre=0;
+	private static int cptServer=0;
 	
 	public static void main(String[] args) throws InterruptedException{
 		
@@ -186,13 +189,13 @@ public class Brick{
 						
 					} 		
 					
-					if (nombre==0) {
-						nombre=1;			
-						System.out.println("-------IF---------");
+					//if (nombre==0) {
+						//nombre=1;			
+						//System.out.println("-------IF---------");
 						portail.majEtatPortail();
 						ouverturePortailVoiture();
-						System.out.println("Valeur nombre : "+nombre);
-					}
+						//System.out.println("Valeur nombre : "+nombre);
+				//	}
 					
 													
 					
@@ -204,17 +207,28 @@ public class Brick{
 		}
 	}
 	
-	public static void ouverturePortailVoiture() {
-		server.start();
-		server.connectionTCP(80);
-		System.out.println("Attente Voiture");
+	public static void ouverturePortailVoiture() throws InterruptedException {
+		if(cptServer==0) {
+			server.start();
+			server.connectionTCP(80);
+			System.out.println("Attente Voiture");
+			cptServer=1;			
+		}
 		
-		if(server.is_connect == true) {
+		if(server.is_connect == true && cptServer==1) {
 			System.out.println("Connection client success");
+			System.out.println("La voiture entre");
 			moteurDroit.setAction(3);
 			moteurGauche.setAction(3);
 			moteurDroit.resumeThread();
 			moteurGauche.resumeThread();
+			Thread.sleep(5500);
+			System.out.println("La voiture est entree");
+			moteurDroit.setAction(4);
+			moteurGauche.setAction(4);
+			moteurDroit.resumeThread();
+			moteurGauche.resumeThread();
+			cptServer=2;
 		}
 	}
 
