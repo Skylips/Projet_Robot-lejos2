@@ -31,30 +31,29 @@ public class SoundRunnable implements Runnable {
     
     public void playTune() throws InterruptedException
     {
-    	int f = 349;
-    	int a = 440;
-    	int cH = 523;
+    	int a = 600;
+    	int b = 525;
+    	int c = 450;
 
     	if(this.isRunning)
+    		Sound.playTone(a, 200); 
+    	if(this.isRunning)
+    		Sound.playTone(a, 200);     
+    	if(this.isRunning)
+    		Sound.playTone(a, 200); 
+    	if(this.isRunning)
     		Sound.playTone(a, 500); 
+    	
     	if(this.isRunning)
-    		Sound.playTone(a, 500);     
+    		Sound.playTone(c, 500);
     	if(this.isRunning)
-    		Sound.playTone(a, 500); 
+    		Sound.playTone(b, 500);
     	if(this.isRunning)
-    		Sound.playTone(f, 350); 
+    		Sound.playTone(a, 300);
     	if(this.isRunning)
-    		Sound.playTone(cH, 150);
-
-    	if(this.isRunning)
-    		Sound.playTone(a, 500);
-    	if(this.isRunning)
-    		Sound.playTone(f, 350);
-    	if(this.isRunning)
-    		Sound.playTone(cH, 150);
+    		Sound.playTone(b, 200);
     	if(this.isRunning)
     		Sound.playTone(a, 1000);
-        //first bit
     }
 
 }

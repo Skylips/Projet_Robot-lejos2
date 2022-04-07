@@ -125,11 +125,11 @@ public class Brick{
 							case "commande":
 								switch(msgTelecommande.getParams().get(0)){
 									case "ouvTotale":
-										System.out.println("TEST_BT_DEVICE :" +EBT.getBTadress());
+										//System.out.println("TEST_BT_DEVICE :" +EBT.getBTadress());
 										portail.majEtatPortail();
 										ouvertureTotale();
-										
 										break;
+										
 									case "ouvPartielle":
 										portail.majEtatPortail();
 										ouverturePartielle();
