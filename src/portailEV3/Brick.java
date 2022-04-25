@@ -45,6 +45,7 @@ public class Brick{
 	private static ServerTCP server = new ServerTCP();
 	
 	private static int nombre=0;
+	private static int cptServer=0;
 	
 	public static void main(String[] args) throws InterruptedException{
 		
@@ -87,7 +88,7 @@ public class Brick{
 		}
 		
 		if (!capteurPortailFerme.contact()) {
-			//LogEV3.addError("Erreur lors de l'initialisation");
+			LogEV3.addError("Erreur lors de l'initialisation");
 			LCD.clear();
 			LCD.drawString("Erreur lors de l'initialisation", 0, 5);
 			Delay.msDelay(5000);
@@ -117,22 +118,25 @@ public class Brick{
 					if (msgTelecommande != null && msgTelecommande != msgTelecommandePrecedent) {
 						msgTelecommandePrecedent = msgTelecommande;
 						
-						switch(msgTelecommande.getCommande()){
-						
+						switch(msgTelecommande.getCommande()){						
 							case "commande":
+								//Selon le message envoye depuis la tablette
 								switch(msgTelecommande.getParams().get(0)){
+								
+									//Demande d'ouverture totale par l'application
 									case "ouvTotale":
 										System.out.println("TEST_BT_DEVICE :" +EBT.getBTadress());
 										portail.majEtatPortail();
-										ouvertureTotale();
-										
+										ouvertureTotale();										
 										break;
+								
+									//Demande d'ouverture partielle par l'application
 									case "ouvPartielle":
 										portail.majEtatPortail();
 										ouverturePartielle();
 										break;
 										
-										//Préparation de la gestion de la deconnexion, ne fonctionne pas encore 
+									//Preparation de la gestion de la deconnexion, ne fonctionne pas encore 
 									case "deconnexion":
 										isConnected = false;
 										System.out.println("Test deconnexion");
@@ -142,15 +146,17 @@ public class Brick{
 										break;
 								}
 								break;	
+							
+							//Connexion de l'application au portail	
 							case "connexion":
 								System.out.println(msgTelecommande.getParams().get(0) + " " + msgTelecommande.getParams().get(0));
 								break;
 								
-								//Gestion de la création des users
+							//Gestion de la création des users
 							case "newuser":
 								Utilisateur u = new Utilisateur(msgTelecommande.getParams().get(0), msgTelecommande.getParams().get(1));
 								try {
-									//écriture et lecture du fichiers utilisateurs
+									//Ecriture et lecture du fichiers "Utilisateurs"
 									u.writeUtilisateur(u,"Utilisateurs");
 									u.readUtilisateur(u,"Utilisateurs");
 								} catch (JSONException e) {
@@ -159,11 +165,11 @@ public class Brick{
 								}
 								break;
 								
-								//GEstion de la création de nouveaux véhicules
+							//Gestion de la création de nouveaux véhicules
 							case "newvehicule":
 								Vehicule v = new Vehicule(msgTelecommande.getParams().get(0), msgTelecommande.getParams().get(1));
 								try {
-									//écriture et lecture du fichiers Véhicules
+									//Ecriture et lecture du fichiers "Vehicules"
 									v.writeVehicule(v,"Vehicules");
 									v.readVehicule(v,"Vehicules");
 								} catch (JSONException e) {
@@ -186,16 +192,9 @@ public class Brick{
 						
 					} 		
 					
-					//Action qui s'effectue une fois, pour appeler la fonction ouverturePortailVoiture, et lancer le serveur
-					if (nombre==0) {
-						nombre=1;			
-						System.out.println("-------IF---------");
-						portail.majEtatPortail();
-						ouverturePortailVoiture();
-						System.out.println("Valeur nombre : "+nombre);
-					}
-					
-													
+					//Appelle de la fonction ouverturePortailVoiture, pour lancer le serveur TCP							
+					portail.majEtatPortail();
+					ouverturePortailVoiture();														
 					
 				}
 				System.out.println("INTERRUPTION!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -206,17 +205,31 @@ public class Brick{
 	}
 
 	//Actions effectuées lorsqu'on demande l'ouverture via l'application du véhicule
-	public static void ouverturePortailVoiture() {
-		server.start();
-		server.connectionTCP(80);
-		System.out.println("Attente Voiture");
+	public static void ouverturePortailVoiture() throws InterruptedException {
 		
-		if(server.is_connect == true) {
+		//Condition pour que le lancement du serveur TCP ne s'effectue qu'une fois
+		if(cptServer==0) {			
+			server.start();
+			server.connectionTCP(80);
+			System.out.println("Attente Voiture");
+			cptServer=1;			
+		}
+		
+		//Condition : la voiture doit s'etre connecte au serveur TCP et ce dernier doit etre lance (variable cptServer)
+		if(server.is_connect == true && cptServer==1) {
 			System.out.println("Connection client success");
+			System.out.println("La voiture entre");
 			moteurDroit.setAction(3);
 			moteurGauche.setAction(3);
 			moteurDroit.resumeThread();
 			moteurGauche.resumeThread();
+			Thread.sleep(5500);
+			System.out.println("La voiture est entree");
+			moteurDroit.setAction(4);
+			moteurGauche.setAction(4);
+			moteurDroit.resumeThread();
+			moteurGauche.resumeThread();
+			cptServer=2;
 		}
 	}
 

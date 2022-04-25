@@ -55,6 +55,12 @@ public class MoteurRunnable implements Runnable {
 					}catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+				case 4:
+					try {
+						fermerVoiture();
+					}catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				default:
 					break;
 				}
@@ -84,7 +90,7 @@ public class MoteurRunnable implements Runnable {
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					//LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
+					LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
 					System.exit(1);
 					break;
 				}
@@ -116,7 +122,7 @@ public class MoteurRunnable implements Runnable {
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					//LogEV3.addError("Disfonctionnement capteur fermeture");
+					LogEV3.addError("Disfonctionnement capteur fermeture");
 					System.exit(1);
 					break;
 				}
@@ -133,7 +139,7 @@ public class MoteurRunnable implements Runnable {
 		this.porte.stop(true);
 	}
 
-	//Action d'ouvrir la porte, quand demandé par le véhicule
+	//Action d'ouvrir la porte, quand demandé par le vehicule
 	public void ouvrirVoiture() throws InterruptedException{
 		this.porte.setEtat(EtatPorte.EN_OUVERTURE);
 		this.sound.resumeThread();
@@ -142,17 +148,17 @@ public class MoteurRunnable implements Runnable {
 		
 		System.out.println();
 		
-		//Le portail doit être fermé et le véhicule doit être détecté (capteur présence = véhicule devant)
+		//Le portail doit etre ferme et le vehicule doit etre detecte (capteur présence = vehicule devant)
 		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
 
-			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
+			//Si la porte a dépasse un angle drfini, ou alors si la porte a encore bouge
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.ouvrir();
 				lastPosition = this.porte.getPosition();
 			} else {
 				Thread.sleep(1000);
 				if (this.porte.getPosition() == lastPosition) {
-					//LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
+					LogEV3.addError("Disfonctionnement capteur ouverture" + this.cote);
 					System.exit(1);
 					break;
 				}
@@ -164,6 +170,36 @@ public class MoteurRunnable implements Runnable {
 		} else {
 			this.porte.setEtat(EtatPorte.ARRETEE_EN_OUVERTURE);
 		}
+		this.sound.stopThread();
+		this.porte.stop(true);
+	}
+	
+	public void fermerVoiture() throws InterruptedException {
+		this.porte.setEtat(EtatPorte.EN_FERMETURE);
+		this.sound.resumeThread();
+		
+		float lastPosition = 1000;
+		
+		while (!this.capteurFerme.contact() && this.isRunning && this.capteurPresence.presence()) {
+			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
+				this.porte.fermer();
+				lastPosition = this.porte.getPosition();
+			} else {
+				Thread.sleep(1000);
+				if (this.porte.getPosition() == lastPosition) {
+					LogEV3.addError("Disfonctionnement capteur fermeture");
+					System.exit(1);
+					break;
+				}
+			}
+		}
+		
+		if (this.capteurFerme.contact()) {
+			this.porte.setEtat(EtatPorte.FERMEE);
+		} else {
+			this.porte.setEtat(EtatPorte.ARRETEE_EN_FERMETURE);
+		}
+		
 		this.sound.stopThread();
 		this.porte.stop(true);
 	}

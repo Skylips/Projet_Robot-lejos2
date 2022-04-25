@@ -29,7 +29,7 @@ public class PortailRunnable implements Runnable {
 			majEtatPortail();
 			if (this.etatPortail != etatPortailPrec && this.etatPortail != EtatPortail.INCONNU ) {
 				//System.out.println(etatPorteGauche + " " + etatPorteDroite);
-				//LogEV3.addLog(etatPortail.toString());
+				LogEV3.addLog(etatPortail.toString());
 			}
 			etatPortailPrec = etatPortail;
 		}
