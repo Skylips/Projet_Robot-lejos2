@@ -9,7 +9,7 @@ public class CapteurPresence {
 
 	public CapteurPresence(Port port) {
 		this.CapteurPresence = new EV3UltrasonicSensor(port);
-		System.out.println("Capteur de presence initialisé");
+		System.out.println("Capteur de presence initialise");
 	}
 
 	public boolean presence() {
@@ -19,7 +19,7 @@ public class CapteurPresence {
 
 		float etat = sample[0];
 		
-		if (etat < 0.5)
+		if (etat < 0.2)
 			return true;
 		else
 			return false;
