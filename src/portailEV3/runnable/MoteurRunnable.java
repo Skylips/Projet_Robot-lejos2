@@ -32,6 +32,8 @@ public class MoteurRunnable implements Runnable {
 		while (true) {
 			if (this.isRunning) {
 				System.out.println("ACTION : "+action);
+				
+				//Selon la valeur envoyée depuis Brick.java, l'action du portail est choisie
 				switch (this.action) {
 				case 1:
 					try {
@@ -64,6 +66,7 @@ public class MoteurRunnable implements Runnable {
 
 	}
 
+	//Action d'ouvrir la porte 
 	public void ouvrir() throws InterruptedException {
 		this.porte.setEtat(EtatPorte.EN_OUVERTURE);
 		this.sound.resumeThread();
@@ -74,6 +77,7 @@ public class MoteurRunnable implements Runnable {
 		
 		while (!this.capteurOuvert.contact() && this.isRunning && !this.capteurPresence.presence()) {
 			
+			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.ouvrir();
 				lastPosition = this.porte.getPosition();
@@ -96,6 +100,7 @@ public class MoteurRunnable implements Runnable {
 		this.porte.stop(true);
 	}
 
+	//Action de fermer la porte
 	public void fermer() throws InterruptedException {
 		this.porte.setEtat(EtatPorte.EN_FERMETURE);
 		this.sound.resumeThread();
@@ -103,6 +108,8 @@ public class MoteurRunnable implements Runnable {
 		float lastPosition = 1000;
 		
 		while (!this.capteurFerme.contact() && this.isRunning && !this.capteurPresence.presence()) {
+			
+			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.fermer();
 				lastPosition = this.porte.getPosition();
@@ -126,6 +133,7 @@ public class MoteurRunnable implements Runnable {
 		this.porte.stop(true);
 	}
 
+	//Action d'ouvrir la porte, quand demandé par le véhicule
 	public void ouvrirVoiture() throws InterruptedException{
 		this.porte.setEtat(EtatPorte.EN_OUVERTURE);
 		this.sound.resumeThread();
@@ -134,8 +142,10 @@ public class MoteurRunnable implements Runnable {
 		
 		System.out.println();
 		
+		//Le portail doit être fermé et le véhicule doit être détecté (capteur présence = véhicule devant)
 		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
-			
+
+			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.ouvrir();
 				lastPosition = this.porte.getPosition();
@@ -157,41 +167,7 @@ public class MoteurRunnable implements Runnable {
 		this.sound.stopThread();
 		this.porte.stop(true);
 	}
-	
-	/*public void ouvrirVoiture() throws InterruptedException{
-		this.porte.setEtat(EtatPorte.EN_OUVERTURE); 
 		
-		this.sound.resumeThread();
-		
-		float lastPosition = -1000;
-		
-		/*System.out.println("VERIF ICI");
-		System.out.println("1 : "+!this.capteurOuvert.contact());
-		System.out.println("2 : "+this.isRunning);
-		System.out.println("3 : "+this.capteurPresence.presence());
-				
-		while (!this.capteurOuvert.contact() && this.isRunning && this.capteurPresence.presence()) {
-			
-			//System.out.println("Boucle ouvrirVoiure");
-			
-			if(this.porte.getPosition() < 110 || this.porte.getPosition() != lastPosition) {
-				this.porte.ouvrir();
-				lastPosition = this.porte.getPosition();
-				
-				System.out.println("Position Porte : "+this.porte.getPosition());
-				System.out.println("Boolean : "+(this.porte.getPosition() != lastPosition));
-				
-			}else {
-				Thread.sleep(200);
-				if(this.porte.getPosition() == lastPosition) {
-					LogEV3.addError("Erreur Capteru ouverture | "+this.cote);
-					System.exit(1);
-					break;
-				}
-			}			
-		}
-	}*/
-	
 	public void setAction(int action) {
 		System.out.println("action");
 		this.action = action;

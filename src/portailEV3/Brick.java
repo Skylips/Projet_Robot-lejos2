@@ -186,6 +186,7 @@ public class Brick{
 						
 					} 		
 					
+					//Action qui s'effectue une fois, pour appeler la fonction ouverturePortailVoiture, et lancer le serveur
 					if (nombre==0) {
 						nombre=1;			
 						System.out.println("-------IF---------");
@@ -203,7 +204,8 @@ public class Brick{
 			}
 		}
 	}
-	
+
+	//Actions effectuées lorsqu'on demande l'ouverture via l'application du véhicule
 	public static void ouverturePortailVoiture() {
 		server.start();
 		server.connectionTCP(80);
@@ -218,6 +220,7 @@ public class Brick{
 		}
 	}
 
+	//Actions effectuées lorsqu'on demande l'ouverture totale via l'application 
 	public static void ouvertureTotale() {
 		switch (portail.getEtatPortail()) {
 			case FERME:
@@ -268,6 +271,7 @@ public class Brick{
 		}
 	}
 	
+	//Actions effectuées lorsqu'on demande l'ouverture partielle via l'application 
 	public static void ouverturePartielle() {
 		switch (portail.getEtatPortail()) {
 			case FERME:
