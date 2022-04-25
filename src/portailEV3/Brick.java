@@ -64,29 +64,30 @@ public class Brick{
 		
 		System.out.println("Debut de l'initialisation");
 		
-		// Initialisation du portail
+		// Initialisation du portail (ouverture du portail)
 		moteurDroit.setAction(1);
 		moteurGauche.setAction(1);
 		moteurDroit.resumeThread();
 		moteurGauche.resumeThread();
-
 		
 		while (moteurDroit.getIsRunning() || moteurGauche.getIsRunning()) {
 			Thread.sleep(1000);
 		}
 		
+		// Initialisation du portail (fermeture du portail)
+		// SI le portail est detecte comme ouvert
 		if (portail.getEtatPortail() == EtatPortail.OUVERT) {
 			moteurDroit.setAction(2);
 			moteurGauche.setAction(2);
 			moteurDroit.resumeThread();
 			moteurGauche.resumeThread();
 		}
-
 		
 		while (moteurDroit.getIsRunning() || moteurGauche.getIsRunning()) {
 			Thread.sleep(1000);
 		}
 		
+		//Si le capteur-ferme pour le portail n'est pas active a la fin de l'initialisation, alors il y a un probleme
 		if (!capteurPortailFerme.contact()) {
 			LogEV3.addError("Erreur lors de l'initialisation");
 			LCD.clear();
