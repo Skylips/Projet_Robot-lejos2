@@ -42,6 +42,7 @@ public class MoteurRunnable implements Runnable {
 						e.printStackTrace();
 					}
 					break;
+					
 				case 2:
 					try {
 						fermer();
@@ -49,18 +50,23 @@ public class MoteurRunnable implements Runnable {
 						e.printStackTrace();
 					}
 					break;
+					
 				case 3:
 					try {
 						ouvrirVoiture();
 					}catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					break;
+					
 				case 4:
 					try {
 						fermerVoiture();
 					}catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					break;
+					
 				default:
 					break;
 				}
@@ -83,7 +89,7 @@ public class MoteurRunnable implements Runnable {
 		
 		while (!this.capteurOuvert.contact() && this.isRunning && !this.capteurPresence.presence()) {
 			
-			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
+			//Si la porte a dépasse un angle defini, ou alors si la porte a encore bouge
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.ouvrir();
 				lastPosition = this.porte.getPosition();
@@ -97,6 +103,7 @@ public class MoteurRunnable implements Runnable {
 			}			
 		}
 
+		//Si le capteur de contact est active, alors la porte est ouverte
 		if (this.capteurOuvert.contact()) {
 			this.porte.setEtat(EtatPorte.OUVERTE);
 		} else {
@@ -115,7 +122,7 @@ public class MoteurRunnable implements Runnable {
 		
 		while (!this.capteurFerme.contact() && this.isRunning && !this.capteurPresence.presence()) {
 			
-			//Si la porte a dépassé un angle défini, ou alors si la porte a encore bougé
+			//Si la porte a depasse un angle defini, ou alors si la porte a encore bouge
 			if (this.porte.getPosition() < 360 || this.porte.getPosition() != lastPosition) {
 				this.porte.fermer();
 				lastPosition = this.porte.getPosition();
@@ -128,7 +135,8 @@ public class MoteurRunnable implements Runnable {
 				}
 			}
 		}
-		
+
+		//Si le capteur de contact est active, alors la porte est fermee
 		if (this.capteurFerme.contact()) {
 			this.porte.setEtat(EtatPorte.FERMEE);
 		} else {
@@ -165,6 +173,7 @@ public class MoteurRunnable implements Runnable {
 			}			
 		}
 
+		//Si le capteur de contact est active, alors la porte est ouverte
 		if (this.capteurOuvert.contact()) {
 			this.porte.setEtat(EtatPorte.OUVERTE);
 		} else {
@@ -194,6 +203,7 @@ public class MoteurRunnable implements Runnable {
 			}
 		}
 		
+		//Si le capteur de contact est active, alors la porte est fermee
 		if (this.capteurFerme.contact()) {
 			this.porte.setEtat(EtatPorte.FERMEE);
 		} else {

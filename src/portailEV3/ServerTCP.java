@@ -13,12 +13,18 @@ public class ServerTCP extends Thread{
 	@Override
 	public void run() {
 		while(true) {
+			//Condition : Si personne ne s'est encore connecte, rejouer cette condition
+			//Attention : Cette condition est en double ici car il peut arriver que la condition d'apres ne fonctionne pas, 
+			//			  par securite nous en une rajoutons ici, a defaut d'avoir trouve une solution
 			if(is_connect == false){
+				
+				//Condition : Si le serveur TCP n'as pas ete encore lance (cela modifira alors la valeur de la variable port)
 				if(port!=-1) {
 					try (ServerSocket serverSocket = new ServerSocket(port)){		
 						
 						System.out.println("Server is listennin | Port : "+port);
 						
+							//Condition : Si personne ne s'est encore connecte, rejouer cette condition
 							if (is_connect == false) {
 								Socket socket = serverSocket.accept();
 								is_connect = true;

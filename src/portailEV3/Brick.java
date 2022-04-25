@@ -97,8 +97,7 @@ public class Brick{
 		} else {
 			
 			System.out.println("Succes de l'initialisation");
-			
-			
+						
 			app_alive = true;
 			
 			int codeTelecommandePrecedent = 0;
